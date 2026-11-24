@@ -1,0 +1,71 @@
+.portfolio .horizontal-projects { display:block; padding-block: 48px; }
+.horizontal-stage { padding: 24px 0 32px; }
+.horizontal-projects .projects-heading { margin-bottom: 24px; }
+.horizontal-projects .projects-heading h2 { font-size: clamp(42px,6vw,86px); line-height:1; margin-block: 10px; }
+.horizontal-hint span { color:#c7ff54; }
+.horizontal-viewport { overflow-x:auto; padding: 10px 12px 18px 2px; scroll-snap-type:x mandatory; scrollbar-color:#777 #222; }
+.horizontal-track { display:flex; gap:28px; width:max-content; position:relative; align-items:stretch; }
+.horizontal-card { --accent:#a9ed83; box-sizing:border-box; width:clamp(320px,37vw,510px); padding:24px; border:1px solid #555; border-radius:24px; background:#191919; box-shadow:7px 8px 0 var(--accent); display:flex; flex-direction:column; gap:14px; scroll-snap-align:start; }
+.horizontal-card.ckd { --accent:#83cfff; } .horizontal-card.roster { --accent:#c6a0ff; } .horizontal-card.school { --accent:#f2c17e; }
+.horizontal-card-top { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.horizontal-number { font-size:44px; font-weight:800; line-height:1; color:var(--accent); letter-spacing:-.06em; }
+.horizontal-category { font-size:10px; color:var(--accent); text-align:right; letter-spacing:.05em; }
+.horizontal-art { height:86px; position:relative; overflow:hidden; border-radius:10px; background:color-mix(in srgb,var(--accent) 9%,#151515); }
+.horizontal-art .project-artwork { position:absolute; inset:0; width:100%; height:100%; display:grid; place-items:center; transform:none; opacity:1; }
+.horizontal-art .project-artwork svg { width:100%; height:100%; max-width:180px; }
+.horizontal-card h3 { font-size:clamp(25px,2.5vw,38px); line-height:1.05; letter-spacing:-.045em; margin:0; color:#f1f1ed; }
+.horizontal-card h3 span { color:var(--accent); }
+.horizontal-highlights { list-style:none; margin:0; padding:0; display:grid; gap:8px; color:#c4c4c4; font-size:14px; line-height:1.45; }
+.horizontal-highlights li { padding-left:17px; position:relative; }
+.horizontal-highlights li::before { content:'–'; color:var(--accent); position:absolute; left:0; }
+.horizontal-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; }
+.horizontal-tags span { border:1px solid #444; border-radius:99px; padding:5px 9px; font-size:11px; color:#ddd; }
+.horizontal-actions { display:flex; flex-wrap:wrap; gap:7px; border-top:1px solid #393939; padding-top:12px; }
+.horizontal-actions a,.horizontal-actions button { display:inline-flex; align-items:center; gap:5px; padding:8px; min-height:36px; background:transparent; border:1px solid #444; border-radius:5px; color:#eee; font:inherit; font-size:10px; cursor:pointer; text-decoration:none; }
+.horizontal-actions a:hover,.horizontal-actions button:hover { color:var(--accent); border-color:var(--accent); }
+.horizontal-meter { display:none; height:3px; background:#333; margin-top:12px; }
+.horizontal-meter span { display:block; height:100%; background:#c7ff54; transform:scaleX(0); transform-origin:left; }
+.is-pinned .horizontal-viewport { overflow:clip; scroll-snap-type:none; }
+.is-pinned .horizontal-meter { display:block; }
+@media(max-width:899px), (max-height:739px), (pointer:coarse) { .horizontal-card { width:min(78vw,460px); } .horizontal-projects .horizontal-hint { font-size:13px; } }
+@media(max-width:480px) { .horizontal-card { padding:17px; gap:12px; } .horizontal-track { gap:18px; } .horizontal-actions a,.horizontal-actions button { min-height:44px; } }
+
+/* Dark GitHub end card */
+.horizontal-card.github-card { --accent:#c7ff54; color:var(--accent); }
+.github-card-content { flex:1; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; gap:18px; }
+.github-card-content .horizontal-category { text-align:left; }
+.github-card-content > p:not(.horizontal-category) { color:#b5b5b5; font-size:15px; line-height:1.5; }
+.github-card-link { display:inline-flex; align-items:center; flex-wrap:wrap; gap:10px; padding:12px 15px; background:#c7ff54; color:#101010 !important; font-size:14px; font-weight:700; border-radius:7px; text-decoration:none; }
+.github-card-link:hover { background:#d6ff85; }
+.github-card-link:focus-visible { outline:2px solid white; outline-offset:4px; }
+.is-pinned .horizontal-viewport { padding:18px 18px 24px 12px; overflow:clip; }
+.is-pinned .horizontal-track { perspective:1100px; }
+.is-pinned .horizontal-card { transform-origin:center; backface-visibility:hidden; }
+/* Spacious cards, with a compact fallback for short screens. */
+.horizontal-track { gap:52px; }
+.horizontal-card { width:clamp(330px,35vw,500px); padding:30px; gap:17px; }
+.horizontal-number { font-size:56px; }
+.horizontal-art { height:126px; }
+.horizontal-art .project-artwork svg { max-width:240px; }
+.horizontal-highlights { font-size:15px; gap:9px; }
+.horizontal-actions a,.horizontal-actions button { font-size:12px; padding:10px 12px; }
+.horizontal-projects .projects-heading h2 { font-size:clamp(48px,6vw,86px); }
+.is-pinned .horizontal-viewport { padding:24px 36px 28px; }
+.horizontal-project-status { font-size:11px; color:#aaa; align-self:center; }
+@media (min-width:900px) and (max-height:850px) and (pointer:fine) {
+ .horizontal-stage { padding:8px 0 12px; }
+ .horizontal-projects .projects-heading { margin-bottom:12px; }
+ .horizontal-projects .projects-heading h2 { font-size:clamp(42px,8vh,72px); margin-block:8px; }
+ .horizontal-card { padding:clamp(20px,3.5vh,30px); gap:clamp(10px,1.8vh,16px); }
+ .horizontal-art { height:clamp(64px,13vh,112px); }
+ .horizontal-number { font-size:clamp(38px,6vh,52px); }
+ .horizontal-highlights { font-size:14px; gap:6px; }
+ .horizontal-actions { padding-top:10px; }
+}
+@media(max-width:899px), (pointer:coarse) { .horizontal-card { width:min(82vw,460px); padding:22px; gap:14px; } .horizontal-track { gap:26px; } }
+@media(max-width:480px) { .horizontal-card { padding:18px; } .horizontal-actions a,.horizontal-actions button { min-height:44px; } }
+
+/* Keep perspective local to each card, so off-center cards cannot
+   project toward their neighbors as the entire track translates. */
+.is-pinned .horizontal-track { perspective: none; gap: 76px; }
+.is-pinned .horizontal-card { flex-shrink: 0; }
