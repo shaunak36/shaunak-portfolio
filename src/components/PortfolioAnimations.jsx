@@ -1,3 +1,4 @@
+
 import { useLayoutEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -11,6 +12,7 @@ export default function PortfolioAnimations() {
   useLayoutEffect(() => {
     const media = gsap.matchMedia()
 
+    // General portfolio animations
     media.add(
       '(prefers-reduced-motion: no-preference)',
       () => {
@@ -69,97 +71,294 @@ export default function PortfolioAnimations() {
             '-=0.6'
           )
 
-        // Use each visible element as its own trigger, not the tall card.
         function reveal(elements, distance = 42) {
           gsap.utils.toArray(elements).forEach(element => {
-            gsap.fromTo(element,
-              { opacity: 0, y: distance },
-              { opacity: 1, y: 0, duration: 0.85, ease: 'power3.out',
+            gsap.fromTo(
+              element,
+              {
+                opacity: 0,
+                y: distance,
+              },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.85,
+                ease: 'power3.out',
                 scrollTrigger: {
-                  trigger: element, start: 'top 82%',
-                  toggleActions: 'play none none reverse',
+                  trigger: element,
+                  start: 'top 82%',
+                  once: true,
+                  toggleActions: 'play none none none',
                 },
-              })
+              }
+            )
           })
         }
 
-        reveal('.projects-heading h2, .projects-heading p, .console-heading h2, .profile-section h2')
-        // Pin only when cards fit vertically; otherwise use native horizontal scrolling.
-        media.add('(min-width: 900px) and (min-height: 600px) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
-          if (window.innerWidth < 900 || window.innerHeight < 600 || !window.matchMedia('(pointer: fine)').matches) return
-          const stage = document.querySelector('.horizontal-stage')
-          const section = stage?.closest('.horizontal-projects')
-          const viewport = stage?.querySelector('.horizontal-viewport')
-          const track = stage?.querySelector('.horizontal-track')
-          if (!section || !track || !viewport) return
-          let travel = Math.max(0, track.scrollWidth + 72 - viewport.clientWidth)
-          if (!travel) return
-          section.classList.add('is-sticky-horizontal')
-          const cards = [...track.querySelectorAll('.horizontal-card')]
-          const meter = stage.querySelector('.horizontal-meter span')
-          gsap.set(cards, { transformPerspective: 1100 })
-          const setters = cards.map(card => ({
-            card,
-            ry: gsap.quickSetter(card, 'rotationY', 'deg'),
-            rz: gsap.quickSetter(card, 'rotationZ', 'deg'),
-            z: gsap.quickSetter(card, 'z', 'px'),
-            scale: gsap.quickSetter(card, 'scale'),
-            y: gsap.quickSetter(card, 'y', 'px'),
-          }))
-          const measure = () => {
-            travel = Math.max(0, track.scrollWidth + 72 - viewport.clientWidth)
-            section.style.height = `${stage.offsetHeight + travel}px`
-            section.style.setProperty('--horizontal-scroll-distance', `${travel}px`)
-          }
-          measure()
-          const updateDepth = progress => {
-            // Anchor depth to the project sequence, not the viewport center.
-            // Both endpoints are exactly flat for their respective active cards.
-            const active = gsap.utils.clamp(0, 1, progress) * (cards.length - 1)
-            setters.forEach(({ry, rz, z, scale, y}, index) => {
-              const offset = gsap.utils.clamp(-1, 1, index - active)
+        reveal(
+          '.console-heading h2, .profile-section h2'
+        )
+
+        reveal(
+          '#about > .eyebrow, #about > h2, .profile-panel, .skill-panel'
+        )
+
+        reveal(
+          '#contact > p:not(.contact-email), #contact > .contact-link'
+        )
+
+        timeline.eventCallback('onComplete', () => {
+          ScrollTrigger.refresh()
+        })
+      }
+    )
+
+    // Desktop-only project animations
+    media.add(
+      '(min-width: 900px) and (min-height: 600px) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+      () => {
+        const stage = document.querySelector('.horizontal-stage')
+        const section = stage?.closest('.horizontal-projects')
+        const viewport = stage?.querySelector('.horizontal-viewport')
+        const track = stage?.querySelector('.horizontal-track')
+
+        if (!section || !track || !viewport) return
+
+        let travel = Math.max(
+          0,
+          track.scrollWidth + 72 - viewport.clientWidth
+        )
+
+        if (!travel) return
+
+        section.classList.add('is-sticky-horizontal')
+
+        const cards = [
+          ...track.querySelectorAll('.horizontal-card'),
+        ]
+
+        const meter = stage.querySelector(
+          '.horizontal-meter span'
+        )
+
+        gsap.set(cards, {
+          transformPerspective: 1100,
+        })
+
+        const setters = cards.map(card => ({
+          ry: gsap.quickSetter(card, 'rotationY', 'deg'),
+          rz: gsap.quickSetter(card, 'rotationZ', 'deg'),
+          z: gsap.quickSetter(card, 'z', 'px'),
+          scale: gsap.quickSetter(card, 'scale'),
+          y: gsap.quickSetter(card, 'y', 'px'),
+        }))
+
+        const measure = () => {
+          travel = Math.max(
+            0,
+            track.scrollWidth + 72 - viewport.clientWidth
+          )
+
+          section.style.height =
+            `${stage.offsetHeight + travel}px`
+
+          section.style.setProperty(
+            '--horizontal-scroll-distance',
+            `${travel}px`
+          )
+        }
+
+        measure()
+
+        const updateDepth = progress => {
+          const active =
+            gsap.utils.clamp(0, 1, progress) *
+            (cards.length - 1)
+
+          setters.forEach(
+            ({ ry, rz, z, scale, y }, index) => {
+              const offset = gsap.utils.clamp(
+                -1,
+                1,
+                index - active
+              )
+
               const depth = Math.abs(offset)
+
               ry(-offset * 23)
               rz(offset * 3)
               z(-depth * 100)
               scale(1 - depth * 0.10)
               y(depth * 15)
-            })
-            if (meter) gsap.set(meter, {scaleX: progress})
-          }
-          const tween = gsap.to(track, {
-            x: () => -travel, ease: 'none',
-            onUpdate() { updateDepth(this.progress()) },
-            scrollTrigger: { trigger: section, start: 'top top', end: () => '+=' + travel, pin: false, scrub: true, invalidateOnRefresh: true,
-              onRefreshInit: measure,
-              onRefresh: self => updateDepth(self.animation?.progress() ?? self.progress) }
-          })
-          // Keyboard focus must bring offscreen links into view.
-          const focus = event => {
-            const card = event.target.closest('.horizontal-card')
-            if (!card || !tween.scrollTrigger) return
-            const bounds = card.getBoundingClientRect(), frame = viewport.getBoundingClientRect()
-            if (bounds.left < frame.left || bounds.right > frame.right) {
-              const ratio = Math.min(1, Math.max(0, card.offsetLeft / Math.max(1, travel)))
-              tween.scrollTrigger.scroll(tween.scrollTrigger.start + ratio * (tween.scrollTrigger.end - tween.scrollTrigger.start))
             }
-          }
-          viewport.addEventListener('focusin', focus)
-          updateDepth(0)
-          return () => {
-            viewport.removeEventListener('focusin', focus)
-            section.classList.remove('is-sticky-horizontal')
-            section.style.removeProperty('height')
-            section.style.removeProperty('--horizontal-scroll-distance')
-            gsap.set(track, {clearProps:'transform'})
-            gsap.set(cards, {clearProps:'transform'})
-          }
-        })
-        reveal('#about > .eyebrow, #about > h2, .profile-panel, .skill-panel')
-        reveal('#contact > p:not(.contact-email), #contact > .contact-link')
-        // Keep recruiter contact actions visible at every scroll position.
-        timeline.eventCallback('onComplete', () => ScrollTrigger.refresh())
+          )
 
+          if (meter) {
+            gsap.set(meter, {
+              scaleX: progress,
+            })
+          }
+        }
+
+        const tween = gsap.to(track, {
+          x: () => -travel,
+          ease: 'none',
+
+          onUpdate() {
+            updateDepth(this.progress())
+          },
+
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: () => '+=' + travel,
+            pin: false,
+            scrub: true,
+            invalidateOnRefresh: true,
+            onRefreshInit: measure,
+
+            onRefresh: self => {
+              updateDepth(
+                self.animation?.progress() ??
+                self.progress
+              )
+            },
+          },
+        })
+
+        // Desktop project heading reveal
+        gsap.utils
+          .toArray('.projects-heading h2, .projects-heading p')
+          .forEach(element => {
+            gsap.fromTo(
+              element,
+              {
+                opacity: 0,
+                y: 42,
+              },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.85,
+                ease: 'power3.out',
+                scrollTrigger: {
+                  trigger: element,
+                  start: 'top 82%',
+                  once: true,
+                },
+              }
+            )
+          })
+
+        // Keyboard accessibility
+        const focus = event => {
+          const card = event.target.closest(
+            '.horizontal-card'
+          )
+
+          if (!card || !tween.scrollTrigger) return
+
+          const bounds = card.getBoundingClientRect()
+          const frame = viewport.getBoundingClientRect()
+
+          if (
+            bounds.left < frame.left ||
+            bounds.right > frame.right
+          ) {
+            const ratio = Math.min(
+              1,
+              Math.max(
+                0,
+                card.offsetLeft / Math.max(1, travel)
+              )
+            )
+
+            tween.scrollTrigger.scroll(
+              tween.scrollTrigger.start +
+              ratio *
+              (
+                tween.scrollTrigger.end -
+                tween.scrollTrigger.start
+              )
+            )
+          }
+        }
+
+        viewport.addEventListener('focusin', focus)
+
+        updateDepth(0)
+
+        return () => {
+          viewport.removeEventListener('focusin', focus)
+
+          tween.scrollTrigger?.kill()
+          tween.kill()
+
+          section.classList.remove(
+            'is-sticky-horizontal'
+          )
+
+          section.style.removeProperty('height')
+
+          section.style.removeProperty(
+            '--horizontal-scroll-distance'
+          )
+
+          gsap.set(track, {
+            clearProps: 'transform',
+          })
+
+          gsap.set(cards, {
+            clearProps: 'transform',
+          })
+        }
+      }
+    )
+
+    // Mobile and touchscreen layout
+    media.add(
+      '(max-width: 899px), (pointer: coarse)',
+      () => {
+        const section = document.querySelector(
+          '.horizontal-projects'
+        )
+
+        if (!section) return
+
+        section.classList.remove(
+          'is-sticky-horizontal'
+        )
+
+        section.style.removeProperty('height')
+
+        section.style.removeProperty(
+          '--horizontal-scroll-distance'
+        )
+
+        gsap.set(
+          '.horizontal-track, .horizontal-card',
+          {
+            clearProps: 'transform',
+          }
+        )
+
+        gsap.set(
+          '.projects-heading h2, .projects-heading p',
+          {
+            opacity: 1,
+            y: 0,
+          }
+        )
+      }
+    )
+
+    // Reduced-motion accessibility
+    media.add(
+      '(prefers-reduced-motion: reduce)',
+      () => {
+        gsap.set(loaderRef.current, {
+          display: 'none',
+        })
       }
     )
 

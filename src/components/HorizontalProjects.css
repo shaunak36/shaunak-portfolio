@@ -77,3 +77,62 @@
 .is-sticky-horizontal .horizontal-track { perspective: none; }
 .is-sticky-horizontal .horizontal-track { transform-style:preserve-3d; backface-visibility:hidden; }
 .is-sticky-horizontal .horizontal-card { flex-shrink: 0; }
+/* Mobile project layout */
+@media (max-width: 899px), (pointer: coarse) {
+
+  .portfolio .horizontal-projects {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible;
+    padding-block: 30px 42px;
+  }
+
+  .horizontal-projects .horizontal-stage {
+    position: relative !important;
+    top: auto !important;
+    height: auto !important;
+    padding: 16px 0;
+  }
+
+  .horizontal-projects .horizontal-viewport {
+    overflow: visible !important;
+    scroll-snap-type: none !important;
+    overscroll-behavior: auto;
+    touch-action: pan-y;
+    padding: 8px 12px 16px 2px;
+  }
+
+  .horizontal-projects .horizontal-track {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 28px;
+    transform: none !important;
+    perspective: none !important;
+    transform-style: flat;
+    backface-visibility: visible;
+  }
+
+  .horizontal-projects .horizontal-card {
+    width: 100%;
+    max-width: 100%;
+    min-height: 0;
+    padding: 22px;
+    transform: none !important;
+    scroll-snap-align: none;
+    backface-visibility: visible;
+  }
+
+  .horizontal-projects .horizontal-meter,
+  .horizontal-projects .horizontal-hint {
+    display: none !important;
+  }
+
+  .horizontal-projects .projects-heading h2 {
+    font-size: clamp(36px, 9vw, 56px);
+  }
+
+  .horizontal-projects .horizontal-art {
+    height: 110px;
+  }
+}
