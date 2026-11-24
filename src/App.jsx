@@ -17,7 +17,7 @@ const NeuralCore = lazy(() => import('./components/NeuralCore'))
 
 const github = 'https://github.com/shaunak36'
 const linkedin = 'https://www.linkedin.com/in/shaunak-paul-000907321/'
-const resume = `${import.meta.env.BASE_URL}Shaunak-Paul-Resume.pdf`
+const resume = `${import.meta.env.BASE_URL}Shaunak_Paul_GenAI_Resume.pdf`
 const projects = [
   { number: '01', name: 'KrishiAI', category: 'AI / MOBILE APPLICATION', tagline: 'Offline intelligence for agriculture.', description: 'Offline crop disease detection with MobileNetV2 and TensorFlow Lite inference, paired with multilingual agricultural assistance.', technologies: ['Flutter', 'MobileNetV2', 'TensorFlow Lite', 'Firebase', 'Gemini'], visual: 'krishi', image: null, github: `${github}/Krishi-Ai`, demo: null },
   { number: '02', name: 'CKD One', category: 'MACHINE LEARNING / FULL STACK', tagline: 'Explainable intelligence for healthcare.', description: 'Explainable CKD risk prediction with XGBoost and SHAP, a FastAPI backend, Supabase data layer and AI-powered lab report extraction.', technologies: ['Python', 'XGBoost', 'SHAP', 'FastAPI', 'Supabase', 'Next.js'], visual: 'ckd', image: ckdImage, github: `${github}/ckd-frontend`, demo: 'https://ckd-frontend-iota.vercel.app/en' },
