@@ -1,4 +1,4 @@
-.portfolio .horizontal-projects { display:block; padding-block: 48px; }
+.portfolio .horizontal-projects { display:block; padding-block: 30px 42px; overflow-x: clip; }
 .horizontal-stage { padding: 24px 0 32px; }
 .horizontal-projects .projects-heading { margin-bottom: 24px; }
 .horizontal-projects .projects-heading h2 { font-size: clamp(42px,6vw,86px); line-height:1; margin-block: 10px; }
@@ -25,8 +25,8 @@
 .horizontal-actions a:hover,.horizontal-actions button:hover { color:var(--accent); border-color:var(--accent); }
 .horizontal-meter { display:none; height:3px; background:#333; margin-top:12px; }
 .horizontal-meter span { display:block; height:100%; background:#c7ff54; transform:scaleX(0); transform-origin:left; }
-.is-pinned .horizontal-viewport { overflow:clip; scroll-snap-type:none; }
-.is-pinned .horizontal-meter { display:block; }
+.is-sticky-horizontal .horizontal-viewport { overflow:clip; scroll-snap-type:none; }
+.is-sticky-horizontal .horizontal-meter { display:block; }
 @media(max-width:899px), (max-height:739px), (pointer:coarse) { .horizontal-card { width:min(78vw,460px); } .horizontal-projects .horizontal-hint { font-size:13px; } }
 @media(max-width:480px) { .horizontal-card { padding:17px; gap:12px; } .horizontal-track { gap:18px; } .horizontal-actions a,.horizontal-actions button { min-height:44px; } }
 
@@ -38,9 +38,9 @@
 .github-card-link { display:inline-flex; align-items:center; flex-wrap:wrap; gap:10px; padding:12px 15px; background:#c7ff54; color:#101010 !important; font-size:14px; font-weight:700; border-radius:7px; text-decoration:none; }
 .github-card-link:hover { background:#d6ff85; }
 .github-card-link:focus-visible { outline:2px solid white; outline-offset:4px; }
-.is-pinned .horizontal-viewport { padding:18px 18px 24px 12px; overflow:clip; }
-.is-pinned .horizontal-track { perspective:1100px; }
-.is-pinned .horizontal-card { transform-origin:center; backface-visibility:hidden; }
+.is-sticky-horizontal .horizontal-viewport { overflow:clip; }
+.is-sticky-horizontal .horizontal-track { perspective:1100px; }
+.is-sticky-horizontal .horizontal-card { transform-origin:center; backface-visibility:hidden; }
 /* Spacious cards, with a compact fallback for short screens. */
 .horizontal-track { gap:52px; }
 .horizontal-card { width:clamp(330px,35vw,500px); padding:30px; gap:17px; }
@@ -50,8 +50,11 @@
 .horizontal-highlights { font-size:15px; gap:9px; }
 .horizontal-actions a,.horizontal-actions button { font-size:12px; padding:10px 12px; }
 .horizontal-projects .projects-heading h2 { font-size:clamp(48px,6vw,86px); }
-.is-pinned .horizontal-viewport { padding:24px 36px 28px; }
 .horizontal-project-status { font-size:11px; color:#aaa; align-self:center; }
+.horizontal-viewport { overscroll-behavior-x: contain; }
+.horizontal-card { min-height: 505px; }
+.horizontal-card:focus-within { border-color: var(--accent); }
+@media(max-width:899px), (pointer:coarse) { .horizontal-card { min-height: 0; } }
 @media (min-width:900px) and (max-height:850px) and (pointer:fine) {
  .horizontal-stage { padding:8px 0 12px; }
  .horizontal-projects .projects-heading { margin-bottom:12px; }
@@ -67,5 +70,6 @@
 
 /* Keep perspective local to each card, so off-center cards cannot
    project toward their neighbors as the entire track translates. */
-.is-pinned .horizontal-track { perspective: none; gap: 76px; }
-.is-pinned .horizontal-card { flex-shrink: 0; }
+.is-sticky-horizontal .horizontal-stage { position:sticky; top:0; }
+.is-sticky-horizontal .horizontal-track { perspective: none; }
+.is-sticky-horizontal .horizontal-card { flex-shrink: 0; }

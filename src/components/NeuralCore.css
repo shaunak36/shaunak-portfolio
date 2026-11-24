@@ -2,8 +2,8 @@
   position: absolute;
   top: 65px;
   right: -15px;
-  width: 36%;
-  height: 440px;
+  width: 42%;
+  height: 500px;
   z-index: 1;
 }
 
@@ -82,8 +82,8 @@
 
 @media (max-width: 1100px) {
   .neural-core {
-    width: 30%;
-    height: 350px;
+    width: 34%;
+    height: 390px;
     top: 100px;
   }
 

@@ -49,9 +49,9 @@ export default function PortfolioAnimations() {
             '-=0.4'
           )
           .from(
-            '.hero h1',
+            '.hero-line > span',
             {
-              y: 80,
+              y: 110,
               opacity: 0,
               duration: 1.2,
               ease: 'power4.out',
@@ -83,20 +83,18 @@ export default function PortfolioAnimations() {
           })
         }
 
-        reveal('.projects-heading h2, .projects-heading p, .console-heading h2')
+        reveal('.projects-heading h2, .projects-heading p, .console-heading h2, .profile-section h2')
         // Pin only when cards fit vertically; otherwise use native horizontal scrolling.
         media.add('(min-width: 900px) and (min-height: 600px) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
+          if (window.innerWidth < 900 || window.innerHeight < 600 || !window.matchMedia('(pointer: fine)').matches) return
           const stage = document.querySelector('.horizontal-stage')
+          const section = stage?.closest('.horizontal-projects')
           const viewport = stage?.querySelector('.horizontal-viewport')
           const track = stage?.querySelector('.horizontal-track')
-          if (!track || !viewport) return
-          const distance = () => Math.max(0, track.scrollWidth + 72 - viewport.clientWidth)
-          if (!distance()) return
-          stage.classList.add('is-pinned')
-          if (stage.offsetHeight > window.innerHeight) {
-            stage.classList.remove('is-pinned')
-            return
-          }
+          if (!section || !track || !viewport) return
+          let travel = Math.max(0, track.scrollWidth + 72 - viewport.clientWidth)
+          if (!travel) return
+          section.classList.add('is-sticky-horizontal')
           const cards = [...track.querySelectorAll('.horizontal-card')]
           const meter = stage.querySelector('.horizontal-meter span')
           gsap.set(cards, { transformPerspective: 1100 })
@@ -108,6 +106,12 @@ export default function PortfolioAnimations() {
             scale: gsap.quickSetter(card, 'scale'),
             y: gsap.quickSetter(card, 'y', 'px'),
           }))
+          const measure = () => {
+            travel = Math.max(0, track.scrollWidth + 72 - viewport.clientWidth)
+            section.style.height = `${stage.offsetHeight + travel}px`
+            section.style.setProperty('--horizontal-scroll-distance', `${travel}px`)
+          }
+          measure()
           const updateDepth = progress => {
             // Anchor depth to the project sequence, not the viewport center.
             // Both endpoints are exactly flat for their respective active cards.
@@ -124,9 +128,10 @@ export default function PortfolioAnimations() {
             if (meter) gsap.set(meter, {scaleX: progress})
           }
           const tween = gsap.to(track, {
-            x: () => -distance(), ease: 'none',
+            x: () => -travel, ease: 'none',
             onUpdate() { updateDepth(this.progress()) },
-            scrollTrigger: { trigger: stage, start: 'top top', end: () => '+=' + distance() * 1.35, pin: true, scrub: 0.65, invalidateOnRefresh: true,
+            scrollTrigger: { trigger: section, start: 'top top', end: () => '+=' + travel, pin: false, scrub: true, invalidateOnRefresh: true,
+              onRefreshInit: measure,
               onRefresh: self => updateDepth(self.animation?.progress() ?? self.progress) }
           })
           // Keyboard focus must bring offscreen links into view.
@@ -135,16 +140,23 @@ export default function PortfolioAnimations() {
             if (!card || !tween.scrollTrigger) return
             const bounds = card.getBoundingClientRect(), frame = viewport.getBoundingClientRect()
             if (bounds.left < frame.left || bounds.right > frame.right) {
-              const ratio = Math.min(1, Math.max(0, card.offsetLeft / Math.max(1, distance())))
+              const ratio = Math.min(1, Math.max(0, card.offsetLeft / Math.max(1, travel)))
               tween.scrollTrigger.scroll(tween.scrollTrigger.start + ratio * (tween.scrollTrigger.end - tween.scrollTrigger.start))
             }
           }
           viewport.addEventListener('focusin', focus)
           updateDepth(0)
-          return () => { viewport.removeEventListener('focusin', focus); stage.classList.remove('is-pinned'); gsap.set(cards, {clearProps:'transform'}) }
+          return () => {
+            viewport.removeEventListener('focusin', focus)
+            section.classList.remove('is-sticky-horizontal')
+            section.style.removeProperty('height')
+            section.style.removeProperty('--horizontal-scroll-distance')
+            gsap.set(track, {clearProps:'transform'})
+            gsap.set(cards, {clearProps:'transform'})
+          }
         })
-        reveal('#about > .eyebrow, #about > h2, .profile-intro, .profile-panel, .skill-panel')
-        reveal('#contact > p, #contact > .contact-link')
+        reveal('#about > .eyebrow, #about > h2, .profile-panel, .skill-panel')
+        reveal('#contact > p:not(.contact-email), #contact > .contact-link')
         // Keep recruiter contact actions visible at every scroll position.
         timeline.eventCallback('onComplete', () => ScrollTrigger.refresh())
 

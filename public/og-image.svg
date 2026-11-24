@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Shaunak Paul — AI, Backend &amp; Data Portfolio</title>
+  <desc id="desc">AI, backend development and data systems portfolio by Shaunak Paul.</desc>
+  <rect width="1200" height="630" fill="#101010"/>
+  <path d="M72 92H1128M72 538H1128" stroke="#303030"/>
+  <text x="72" y="78" fill="#b0b0b0" font-family="Arial, sans-serif" font-size="18" letter-spacing="5">PORTFOLIO / AI · BACKEND · DATA</text>
+  <text x="72" y="300" fill="#f1f1ed" font-family="Arial, sans-serif" font-size="104" font-weight="800" letter-spacing="-5">SHAUNAK</text>
+  <text x="72" y="405" fill="#c7ff54" font-family="Arial, sans-serif" font-size="104" font-weight="800" letter-spacing="-5">PAUL.</text>
+  <circle cx="1038" cy="318" r="104" fill="none" stroke="#c7ff54" stroke-width="2" opacity=".6"/>
+  <circle cx="1038" cy="318" r="7" fill="#c7ff54"/>
+  <path d="M1038 214v208M934 318h208" stroke="#c7ff54" opacity=".25"/>
+  <text x="72" y="578" fill="#888" font-family="Arial, sans-serif" font-size="16" letter-spacing="3">SELECTED WORK / 2026</text>
+</svg>

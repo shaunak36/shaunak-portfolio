@@ -218,7 +218,7 @@ export default function NeuralCore() {
       <div className="neural-canvas" ref={stageRef}>
 
         <Canvas
-          dpr={1}
+          dpr={[1, 1.5]}
           frameloop={visible ? 'always' : 'never'}
           camera={{
             position: [0, 0, 9],

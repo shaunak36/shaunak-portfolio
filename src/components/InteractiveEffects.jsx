@@ -23,9 +23,12 @@ export default function InteractiveEffects() {
         smoothWheel: true,
         syncTouch: false,
         anchors: true,
-        prevent: node => Boolean(node.closest?.('dialog, [data-lenis-prevent]')),
+        prevent: node => Boolean(node.closest?.('dialog, [data-lenis-prevent], [data-lenis-prevent-touch]')),
       })
 
+      // Lenis and ScrollTrigger share the GSAP ticker; disable ticker lag
+      // smoothing so fast/reverse input cannot create a second timing path.
+      gsap.ticker.lagSmoothing(0)
       const update = time => lenis.raf(time * 1000)
       lenis.on('scroll', ScrollTrigger.update)
       gsap.ticker.add(update)
@@ -82,6 +85,38 @@ export default function InteractiveEffects() {
       return () => cleanups.forEach(fn => fn())
     })
     return () => media.revert()
+  }, [])
+
+  useEffect(() => {
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)')
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (!finePointer.matches || reduced.matches) return undefined
+    const dot = document.createElement('span')
+    const follower = document.createElement('span')
+    dot.className = 'cursor-dot'
+    follower.className = 'cursor-follower'
+    document.body.append(dot, follower)
+    document.documentElement.classList.add('has-custom-cursor')
+    let frame = 0
+    let x = -20
+    let y = -20
+    const move = event => {
+      x = event.clientX
+      y = event.clientY
+      follower.classList.toggle('is-active', Boolean(isInteractive(event.target)))
+      if (!frame) frame = requestAnimationFrame(() => {
+        dot.style.transform = `translate3d(${x}px, ${y}px, 0)`
+        follower.style.transform = `translate3d(${x}px, ${y}px, 0)`
+        frame = 0
+      })
+    }
+    const isInteractive = target => target instanceof Element && target.closest('a, button, [role="button"]')
+    const enter = event => { if (isInteractive(event.target)) follower.classList.add('is-active') }
+    const leave = event => { if (isInteractive(event.target)) follower.classList.remove('is-active') }
+    window.addEventListener('pointermove', move, { passive: true })
+    document.addEventListener('pointerover', enter)
+    document.addEventListener('pointerout', leave)
+    return () => { window.removeEventListener('pointermove', move); document.removeEventListener('pointerover', enter); document.removeEventListener('pointerout', leave); if (frame) cancelAnimationFrame(frame); dot.remove(); follower.remove(); document.documentElement.classList.remove('has-custom-cursor') }
   }, [])
 
   return <div ref={progressRef} className="portfolio-scroll-progress" aria-hidden="true" />

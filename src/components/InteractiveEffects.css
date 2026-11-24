@@ -13,6 +13,12 @@ html.portfolio-smooth-scroll {
   background: #c7ff54; transform: scaleX(0);
   transform-origin: left center; pointer-events: none; z-index: 1000;
 }
+.cursor-dot, .cursor-follower { position: fixed; top: -3px; left: -3px; display: block; pointer-events: none; z-index: 2147483647; }
+.cursor-dot { width: 6px; height: 6px; border-radius: 50%; background: #c7ff54; box-shadow: 0 0 0 1px rgba(199,255,84,.22); }
+.cursor-follower { width: 28px; height: 28px; border: 1px solid #c7ff54; border-radius: 50%; margin: -11px; opacity: 1; transition: width .2s ease, height .2s ease, margin .2s ease, background-color .2s ease; }
+.cursor-follower.is-active { width: 44px; height: 44px; margin: -19px; background: rgba(199,255,84,.1); }
+html.has-custom-cursor body { cursor: none; }
+html.has-custom-cursor input, html.has-custom-cursor textarea, html.has-custom-cursor [contenteditable="true"] { cursor: text; }
 @media (prefers-reduced-motion: reduce) {
   .portfolio-scroll-progress { display: none; }
 }

@@ -541,8 +541,7 @@ export default function DeveloperConsole() {
       <div className="console-stage" ref={stageRef}>
 
         <Canvas
-          shadows
-          dpr={1}
+          dpr={[1, 1.5]}
           frameloop={visible ? 'always' : 'never'}
           camera={{
             position: [0, 12.6, 9.2],
