@@ -70,6 +70,7 @@
 
 /* Keep perspective local to each card, so off-center cards cannot
    project toward their neighbors as the entire track translates. */
-.is-sticky-horizontal .horizontal-stage { position:sticky; top:0; }
+.is-sticky-horizontal .horizontal-stage { position:sticky; top:0; transform:translate3d(0,0,0); backface-visibility:hidden; }
 .is-sticky-horizontal .horizontal-track { perspective: none; }
+.is-sticky-horizontal .horizontal-track { transform-style:preserve-3d; backface-visibility:hidden; }
 .is-sticky-horizontal .horizontal-card { flex-shrink: 0; }
