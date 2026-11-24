@@ -1,0 +1,45 @@
+/* Final accessibility and mobile refinements */
+.skip-link { position: fixed; top: 12px; left: 12px; z-index: 100000; padding: 14px; background: #c7ff54; color: #101010; transform: translateY(-200%); }
+.skip-link:focus { transform: translateY(0); }
+.console-shortcuts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; }
+.console-shortcuts a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 14px; border: 1px solid #444; font-size: 11px; letter-spacing: .6px; }
+.console-shortcuts a:hover { color: #c7ff54; border-color: #c7ff54; }
+@media (min-width: 651px) and (pointer: fine) { .console-shortcuts:not(:focus-within) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); } }
+@media (max-width: 650px) {
+ .portfolio .navbar .nav-links { gap: 8px; }
+ .portfolio .nav-links a { display: inline-flex; align-items: center; min-height: 44px; padding-inline: 4px; font-size: 11px; }
+ .portfolio .hero h1 { font-size: 18.5vw; }
+ .portfolio .console-stage { height: clamp(210px, 66vw, 340px); }
+ .console-shortcuts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); }
+ .console-shortcuts a { padding-inline: 4px; }
+ .portfolio .premium-project-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+ .portfolio .project-action, .portfolio .premium-preview-button { min-height: 44px; font-size: 11px; }
+ .portfolio .premium-cover-footer { flex-wrap: wrap; }
+ .portfolio .premium-project-description { font-size: 15px; line-height: 1.7; }
+ .portfolio .profile-link { min-height: 46px; }
+ .portfolio .profile-actions .resume-link { flex-basis: 100%; }
+ .portfolio .profile-panel, .portfolio .skill-panel { padding: 20px; }
+ .portfolio .skill-tags span { font-size: 12px; }
+ .portfolio .footer .contact-link { margin-bottom: 24px; }
+ .portfolio .lightbox-close { width: 44px; height: 44px; }
+}
+
+/* Recruiter-focused finishing touches */
+.portfolio .hero-bottom { gap: 24px; flex-wrap: wrap; }
+.hero-role { font-size: clamp(19px, 2vw, 28px); font-weight: 700; color: #f1f1ed; margin-bottom: 8px; letter-spacing: -.025em; }
+.portfolio .hero-introduction .intro { font-size: 15px; line-height: 1.65; letter-spacing: 0; color: #c4c4c4; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.hero-actions .profile-link { min-height: 46px; }
+.portfolio .premium-project-description { font-size: 16px; line-height: 1.7; }
+.portfolio .premium-project-category, .portfolio .profile-meta { font-size: 12px; }
+.portfolio .premium-cover-tagline { color: #d0d0d0; }
+.portfolio .footer .contact-link { margin-bottom: 20px; }
+.portfolio .footer .contact-note { margin-top: 0; }
+.portfolio .contact-actions { margin-top: 20px; }
+@media (max-width: 650px) {
+ .hero-copy-break { display: none; }
+ .hero-actions { width: 100%; }
+ .hero-actions .profile-link { flex: 1 1 145px; gap: 8px; }
+ .portfolio .hero-introduction .intro { font-size: 15px; }
+ .portfolio .premium-project-description { font-size: 15px; }
+}
