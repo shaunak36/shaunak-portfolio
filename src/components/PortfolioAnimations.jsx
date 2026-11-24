@@ -108,7 +108,8 @@ export default function PortfolioAnimations() {
             })
         })
         reveal('#about > .eyebrow, #about > h2, .profile-intro, .profile-panel, .skill-panel')
-        reveal('#contact > p, #contact > .contact-link, #contact > .contact-actions')
+        reveal('#contact > p, #contact > .contact-link')
+        // Keep recruiter contact actions visible at every scroll position.
         timeline.eventCallback('onComplete', () => ScrollTrigger.refresh())
 
       }
