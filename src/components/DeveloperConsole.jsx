@@ -12,6 +12,7 @@ import * as THREE from 'three'
 import Keycap from './Keycap'
 import useSceneVisibility from './useSceneVisibility'
 import './DeveloperConsole.css'
+import { playKeySound } from './keyboardSound'
 
 
 /* RESPONSIVE CAMERA */
@@ -258,7 +259,7 @@ function CRTMonitor({ powered }) {
 
 /* MAIN CONSOLE */
 
-function ConsoleModel() {
+function ConsoleModel({ soundEnabled }) {
   const consoleRef = useRef()
   const [powered, setPowered] = useState(true)
 
@@ -453,7 +454,13 @@ function ConsoleModel() {
           width={key.width}
           color={key.color}
           textColor={key.textColor}
-          onClick={key.action}
+          onHover={() => {
+  if (soundEnabled) playKeySound()
+}}
+onClick={() => {
+  if (soundEnabled) playKeySound()
+  key.action()
+}}
         />
       ))}
 
@@ -518,6 +525,7 @@ function ConsoleModel() {
 
 export default function DeveloperConsole() {
   const [stageRef, visible] = useSceneVisibility()
+  const [soundEnabled, setSoundEnabled] = useState(true)
   return (
     <section className="developer-console">
 
@@ -609,7 +617,7 @@ export default function DeveloperConsole() {
 
           </Environment>
 
-          <ConsoleModel />
+          <ConsoleModel soundEnabled={soundEnabled} />
 
           <ContactShadows
             position={[0, -0.45, 0]}
@@ -633,6 +641,14 @@ export default function DeveloperConsole() {
       <div className="console-bottom">
 
         <span>SP SYSTEMS — MK.02</span>
+        <button type="button" className="console-sound-toggle"
+          aria-label="Keyboard sound" aria-pressed={soundEnabled}
+          onClick={() => {
+            if (!soundEnabled) playKeySound()
+            setSoundEnabled(value => !value)
+          }}>
+          SOUND: {soundEnabled ? 'ON' : 'OFF'}
+        </button>
 
         <span className="console-online">
           <i /> INTERFACE READY

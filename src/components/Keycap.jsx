@@ -1,3 +1,4 @@
+
 import { useRef, useState, useMemo, useEffect } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { RoundedBox, Text } from '@react-three/drei'
@@ -10,10 +11,12 @@ export default function Keycap({
   depth = 1.15,
   color = '#222328',
   textColor = '#ffffff',
+  onHover,
   onClick,
 }) {
   const keyRef = useRef()
   const press = useRef(0)
+  const hoverRef = useRef(false)
   const [hovered, setHovered] = useState(false)
 
   const geometry = useMemo(() => {
@@ -63,12 +66,12 @@ export default function Keycap({
   }, [geometry])
 
   useEffect(() => {
-    document.body.style.cursor = hovered ? 'pointer' : ''
-
     return () => {
-      document.body.style.cursor = ''
+      if (hoverRef.current) {
+        document.body.style.cursor = ''
+      }
     }
-  }, [hovered])
+  }, [])
 
   useFrame((_, delta) => {
     if (!keyRef.current) return
@@ -78,7 +81,11 @@ export default function Keycap({
       press.current - delta * 3.5
     )
 
-    const target = press.current > 0 ? -0.19 : 0
+    const target = press.current > 0
+      ? -0.22
+      : hovered
+        ? -0.12
+        : 0
 
     keyRef.current.position.y = THREE.MathUtils.damp(
       keyRef.current.position.y,
@@ -118,9 +125,37 @@ export default function Keycap({
         ref={keyRef}
         onPointerOver={(event) => {
           event.stopPropagation()
-          setHovered(true)
+
+          if (!hoverRef.current) {
+            hoverRef.current = true
+            setHovered(true)
+            document.body.style.cursor = 'pointer'
+
+            // Play mechanical sound once on hover
+            onHover?.()
+          }
         }}
-        onPointerOut={() => setHovered(false)}
+        onPointerOut={(event) => {
+          // Ignore transitions between parts of this key
+          const stillOverKey = event.intersections.some(
+            ({ object }) => {
+              let current = object
+
+              while (current) {
+                if (current === keyRef.current) return true
+                current = current.parent
+              }
+
+              return false
+            }
+          )
+
+          if (stillOverKey) return
+
+          hoverRef.current = false
+          setHovered(false)
+          document.body.style.cursor = ''
+        }}
         onPointerDown={(event) => {
           event.stopPropagation()
           press.current = 1
