@@ -141,18 +141,6 @@ export default function PortfolioAnimations() {
           '.horizontal-meter span'
         )
 
-        gsap.set(cards, {
-          transformPerspective: 1100,
-        })
-
-        const setters = cards.map(card => ({
-          ry: gsap.quickSetter(card, 'rotationY', 'deg'),
-          rz: gsap.quickSetter(card, 'rotationZ', 'deg'),
-          z: gsap.quickSetter(card, 'z', 'px'),
-          scale: gsap.quickSetter(card, 'scale'),
-          y: gsap.quickSetter(card, 'y', 'px'),
-        }))
-
         const measure = () => {
           travel = Math.max(
             0,
@@ -171,28 +159,6 @@ export default function PortfolioAnimations() {
         measure()
 
         const updateDepth = progress => {
-          const active =
-            gsap.utils.clamp(0, 1, progress) *
-            (cards.length - 1)
-
-          setters.forEach(
-            ({ ry, rz, z, scale, y }, index) => {
-              const offset = gsap.utils.clamp(
-                -1,
-                1,
-                index - active
-              )
-
-              const depth = Math.abs(offset)
-
-              ry(-offset * 23)
-              rz(offset * 3)
-              z(-depth * 100)
-              scale(1 - depth * 0.10)
-              y(depth * 15)
-            }
-          )
-
           if (meter) {
             gsap.set(meter, {
               scaleX: progress,
@@ -202,6 +168,7 @@ export default function PortfolioAnimations() {
 
         const tween = gsap.to(track, {
           x: () => -travel,
+          force3D: false,
           ease: 'none',
 
           onUpdate() {
@@ -252,6 +219,7 @@ export default function PortfolioAnimations() {
 
         // Keyboard accessibility
         const focus = event => {
+          if (!event.target.matches(':focus-visible')) return
           const card = event.target.closest(
             '.horizontal-card'
           )

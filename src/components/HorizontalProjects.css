@@ -136,3 +136,37 @@
     height: 110px;
   }
 }
+/* Keep project actions clickable */
+.horizontal-card {
+  position: relative;
+}
+
+.horizontal-card .horizontal-actions {
+  position: relative;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.horizontal-card .horizontal-actions a,
+.horizontal-card .horizontal-actions button {
+  position: relative;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* Decorative disc elements should not intercept clicks */
+.project-disc .disc-record,
+.project-disc .disc-sleeve,
+.project-disc .disc-art {
+  pointer-events: none;
+}
+/* Prevent 3D hit-testing issues */
+.is-sticky-horizontal .horizontal-track {
+  transform-style: flat !important;
+  backface-visibility: visible !important;
+}
+
+.is-sticky-horizontal .horizontal-card {
+  transform: none !important;
+  backface-visibility: visible !important;
+}
