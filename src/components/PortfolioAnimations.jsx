@@ -141,6 +141,8 @@ export default function PortfolioAnimations() {
           '.horizontal-meter span'
         )
 
+        const scrollRatio = 2.5
+
         const measure = () => {
           travel = Math.max(
             0,
@@ -148,11 +150,11 @@ export default function PortfolioAnimations() {
           )
 
           section.style.height =
-            `${stage.offsetHeight + travel}px`
+            `${stage.offsetHeight + travel * scrollRatio}px`
 
           section.style.setProperty(
             '--horizontal-scroll-distance',
-            `${travel}px`
+            `${travel * scrollRatio}px`
           )
         }
 
@@ -178,9 +180,9 @@ export default function PortfolioAnimations() {
           scrollTrigger: {
             trigger: section,
             start: 'top top',
-            end: () => '+=' + travel,
+            end: () => '+=' + travel * scrollRatio,
             pin: false,
-            scrub: true,
+            scrub: 0,
             invalidateOnRefresh: true,
             onRefreshInit: measure,
 

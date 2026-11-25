@@ -31,8 +31,8 @@ export default function InteractiveEffects() {
 
       const lenis = new Lenis({
         autoRaf: false,
-        lerp: 0.1,
-        smoothWheel: true,
+        lerp: 0.15,
+        smoothWheel: false,
         syncTouch: false,
         anchors: true,
         prevent: node => Boolean(
