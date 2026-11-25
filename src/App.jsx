@@ -9,6 +9,7 @@ import './components/HorizontalProjects.css'
 import PortfolioAnimations from './components/PortfolioAnimations'
 import InteractiveEffects from './components/InteractiveEffects'
 import ProjectDisc from './components/ProjectDisc'
+import ContactTicket from './components/ContactTicket'
 import ckdImage from './assets/projects/ckd-one.png'
 import rosterImage from './assets/projects/smart-roster.png'
 import schoolImage from './assets/projects/school-management.png'
@@ -98,9 +99,7 @@ function App() {
         </div>
       </div>
     </section>
-    <footer id="contact" className="footer"><p>04 — CONTACT / INTERNSHIPS &amp; FREELANCE</p><a href="mailto:paulshaunak5@gmail.com" className="contact-link">LET'S TALK<span>↗</span></a><p className="contact-email"><a href="mailto:paulshaunak5@gmail.com">paulshaunak5@gmail.com</a></p><p className="contact-note">Interested in internships, freelance projects and
-  collaborations in Generative AI, Machine Learning
-  and Data Analytics.</p><div className="profile-actions contact-actions"><a className="profile-link resume-link" href={resume} download="Shaunak_Paul_GenAI_Resume.pdf">DOWNLOAD RESUME <span>↓</span></a><SocialLink href={linkedin}>LINKEDIN</SocialLink><SocialLink href={github}>GITHUB</SocialLink></div><div className="footer-bottom"><p>© 2026 SHAUNAK PAUL</p><p>DESIGNED &amp; BUILT WITH CURIOSITY.</p></div></footer>
+    <ContactTicket github={github} linkedin={linkedin} resume={resume} />
     <dialog ref={dialogRef} className="lightbox" aria-labelledby="lightbox-title" onClose={() => setSelectedProject(null)} onClick={event => { if (event.target === event.currentTarget) closePreview() }}>{selectedProject && <div className="lightbox-content"><div className="lightbox-header"><div><p className="lightbox-label">PROJECT / {selectedProject.number}</p><h2 id="lightbox-title">{selectedProject.name}</h2></div><button type="button" className="lightbox-close" onClick={closePreview} aria-label="Close image preview">×</button></div><img src={selectedProject.image} alt={`${selectedProject.name} application screenshot`} className="lightbox-image" loading="lazy" decoding="async" /><div className="lightbox-footer"><span>PROJECT PREVIEW / 2026</span><span>PRESS ESC TO CLOSE</span></div></div>}</dialog>
   </main>
 }
