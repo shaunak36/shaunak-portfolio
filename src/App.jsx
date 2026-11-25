@@ -63,11 +63,11 @@ function App() {
           </figure>
           <figure className="archive-travel">
             <img src={`${import.meta.env.BASE_URL}images/about-travel.webp`} alt="Shaunak looking towards the mountains" loading="lazy" width="600" height="650" />
-            <figcaption>away from the screen <span>↗</span></figcaption>
+            <figcaption>away from the screen</figcaption>
           </figure>
           <div className="archive-contact archive-paper">
             <p className="archive-kicker">CONTACT / 01</p>
-            <a href="mailto:paulshaunak5@gmail.com">Email <ArrowUpRight size={14} /></a>
+            <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=paulshaunak5%40gmail.com" target="_blank" rel="noopener noreferrer">Email <ArrowUpRight size={14} /></a>
             <SocialLink href={github}>GitHub</SocialLink>
             <SocialLink href={linkedin}>LinkedIn</SocialLink>
             <a href={resume} download="Shaunak_Paul_GenAI_Resume.pdf">Resume <span>↓</span></a>
